@@ -1,0 +1,165 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Buying</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content">
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="col-md-3">
+                <button th:value="${isError}" id="modalButton" type="button" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#modal1">PURCHASE FROM REGISTERED SUPPLIER
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="main-card mb-3 card mainCart">
+        <div class="card-header cardHeader">Sales</div>
+
+        <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                    <input id="search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                           aria-describedby="addon-wrapping">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="col-lg-12">
+                <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                    <div class="alert alert-warning">No purchase information stored on your system was found.</div>
+                </div>
+                <table id="purchase_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">DATE</th>
+                        <th scope="col">BILL NUMBER</th>
+                        <th scope="col">SUPPLIER INFORMATION</th>
+                        <th scope="col">PRODUCT INFORMATION</th>
+                        <th scope="col">NUMBER OF PRODUCTS</th>
+                        <th scope="col">PURCHASE PRICE</th>
+                        <th scope="col">PAYMENT TYPE</th>
+                        <th scope="col">DETAIL</th>
+                        <th scope="col">DELETE</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tablePurchase">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">PURCHASE FROM REGISTERED SUPPLIER</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/purchase/insertPurchase" method="post" th:object="${purchaseInterlayer}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Supplier Company Search</label>
+                            <select name="supplier_id" id="sFName" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('supplier_id') }"
+                                 th:errors="*{supplier_id}"></div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Product Search</label>
+                            <select name="product_id" id="proSearchName" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('product_id') }"
+                                 th:errors="*{product_id}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="purchase_number" class="col-form-label">Product Quantity</label>
+                            <input type="input" class="form-control" id="purchase_number" name="purchase_number"
+                                   placeholder="Product Quantity"
+                                   value="0" size="5" maxlength="5" min="0"
+                            />
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('purchase_number') }" th:errors="*{purchase_number}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Payment method</label>
+                            <select id="purchase_type" name="purchase_type" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                                <option data-subtext="" value="0">Choose Payment Method</option>
+                                <option data-subtext="" value="1">Cash</option>
+                                <option data-subtext="" value="2">Credit card</option>
+                                <option data-subtext="" value="3">Transfer</option>
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('purchase_type') }" th:errors="*{purchase_type}"></div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="pNote" class="col-form-label">Buying Note</label>
+                            <textarea class="form-control" id="pNote" name="pNote"
+                                      placeholder="Enter Your Purchase Note."></textarea>
+                            <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pNote') }"
+                                 th:errors="*{pNote}"></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="mb-4"></div>
+                            <div class="mb-4">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            <div class="mb-4">
+                                <button type="submit" class="btn btn-success">Confirm Sale
+                                </button>
+                            </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/purchase.js}"></script>
+</th:block>
+</body>
+
+</html>

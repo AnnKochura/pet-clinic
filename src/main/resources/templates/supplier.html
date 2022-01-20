@@ -1,0 +1,132 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Supplier</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content" >
+    <div class="breadcrumb" style="background-color: #e9ecef; padding: .75rem 1rem;">
+        <button th:value="${isError}" type="button" id="supplier_insertBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#supplierModal">
+            <i class="fa fa-save"></i>Tedarikçi Ekle
+        </button>
+        <button style="display: none;" th:value="${isError}" type="button" id="supplier_updateBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#supplierModal">
+            <i class="fa fa-save"></i>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-11" style="margin: 0px 5%;">
+            <div class="card">
+                <div class="card-header window-border" style="background-color: #5e72e4; color: #fff;">Supplier Table</div>
+                <div class="row justify-content-md-center">
+                    <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                                <input id="supplier_search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                                       aria-describedby="addon-wrapping">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                            <div class="alert alert-warning">No supplier found in the system.</div>
+                        </div>
+                        <table id="supplier_control" class="align-middle mb-0 table table-borderless table-striped table-hover ">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Supplier Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone number</th>
+                            <th scope="col">Activity</th>
+                            <th scope="col">Process</th>
+                            </thead>
+                            <tbody id="tableRows">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">Add Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form form action="/supplier/insert" method="post" th:object="${supplier}">
+                        <div class="mb-3">
+
+
+                            <div class="mb-3">
+                                <label for="supplier_name" class="col-form-label">Supplier Name/Title</label>
+                                <input type="text" class="form-control" id="supplier_name"  name="supplier_name" placeholder="Supplier Name/Title">
+                            </div>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('supplier_name') }" th:errors="*{supplier_name}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="supplier_mail" class="col-form-label">E-Mail</label>
+                                <input type="email" class="form-control" id="supplier_mail"  name="supplier_mail">
+                            </div>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('supplier_mail') }" th:errors="*{supplier_mail}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="supplier_tel" class="col-form-label">Phone number</label>
+                                <input type="tel" class="form-control" id="supplier_tel"  name="supplier_tel">
+                            </div>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('supplier_tel') }" th:errors="*{supplier_tel}">
+                            </div>
+                            <div class="form-check">
+                                <input name="supplier_statu" class="form-check-input" type="checkbox" value="selected" id="supplier_statu" checked>
+                                <label class="form-check-label" for="supplier_statu">Active</label>
+                            </div>
+
+                            <th:block th:if="${isValidName}">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> <th:block th:text="${validNameError}"></th:block>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </th:block>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/supplier.js}"></script>
+</th:block>
+</body>
+
+</html>

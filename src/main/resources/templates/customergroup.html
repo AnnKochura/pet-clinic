@@ -1,0 +1,107 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Customer Group</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content" >
+    <div class="breadcrumb" style="background-color: #e9ecef; padding: .75rem 1rem;">
+        <button th:value="${isError}" type="button" id="cs_group" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#csGroup">
+            <i class="fa fa-save"></i> Add Customer Group
+        </button>
+        <button style="display: none;" th:value="${isError}" type="button" id="cs_group2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#csGroup">
+            <i class="fa fa-save"></i>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-11" style="margin: 0px 5%;">
+            <div class="card">
+                <div class="card-header window-border" style="background-color: #5e72e4; color: #fff;"> Customer Groups </div>
+                <div class="row justify-content-md-center">
+                    <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                                <input id="csgroup_search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                                       aria-describedby="addon-wrapping">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                            <div class="alert alert-warning">The customer group registered in the system could not be found.</div>
+                        </div>
+                        <table id="group_control" class="align-middle mb-0 table table-borderless table-striped table-hover ">
+                            <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">Customer Groupu</th>
+                            <th scope="col">Process</th>
+                            </thead>
+                            <tbody id="tableRows">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="csGroup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">Add Customer Group</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form form action="/customergroup/insert" method="post" th:object="${customerGroup}">
+                        <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="cu_gr_name" class="form-label">Customer Group Name</label>
+                                <input class="form-control" type="text" id="cu_gr_name" name="cu_gr_name">
+                            </div>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('cu_gr_name') }" th:errors="*{cu_gr_name}">
+                            </div>
+                            <th:block th:if="${isValidName}">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Hata!</strong> <th:block th:text="${validNameError}"></th:block>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </th:block>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/customerGroup.js}"></script>
+</th:block>
+</body>
+
+</html>

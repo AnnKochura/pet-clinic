@@ -1,0 +1,112 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Client - Animal Information</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+
+        .pcard {
+            color: white;
+            font-size: 18px;
+
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 325px;
+            height: 300px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .flip-card-front {
+            background-color: #b01f8ba6;
+            color: black;
+        }
+
+        .flip-card-back {
+            background-color: purple;
+            color: white;
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="row mt-4">
+        <th:block th:if="${all!=null}">
+            <th:block th:if="${all.size()>0}">
+                <div class="flip-card mt-4" style="align-items: center">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img th:src="${profilePhoto}" alt="Avatar"
+                                 style="width:300px;height:300px;">
+                            <span th:text="${all.get(0).cuname}"></span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p class="pcard" th:text="${all.get(0).cuname}"></p>
+                            <p class="pcard" th:text="${all.get(0).cumail}"></p>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </th:block>
+        <th:block th:if="${all!=null}">
+            <th:block th:if="${all.size()>0}">
+                <th:block th:each="item:${all}">
+                    <div class="flip-card mt-4">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img th:src="@{/images/customerinfo/pet.webp}" alt="Avatar"
+                                     style="width:300px;height:300px;">
+                                <span th:text="${item.pname}"></span>
+                            </div>
+                            <div class="flip-card-back">
+                                <p class="pcard" th:text="${item.born}"></p>
+                                <p class="pcard" th:text="${item.gender}==1?'Boy':'Girl'"></p>
+                                <p class="pcard" th:text="${item.typename}"></p>
+                                <p class="pcard" th:text="${item.breedname}"></p>
+                                <p class="pcard" th:text="${item.neutering}==0?'Barren':'Not Barren'"></p>
+                                <p class="pcard" th:text="${item.chipnumber}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </th:block>
+        </th:block>
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/customerList.js}"></script>
+</th:block>
+</body>
+
+</html>

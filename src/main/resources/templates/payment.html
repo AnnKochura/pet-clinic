@@ -1,0 +1,222 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+  <title>Payment transactions</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content">
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="col-md-2">
+        <button th:value="${isError1}" type="button" id="modalPayIn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payIn" >Cashier Money Entry</button>
+      </div>
+      <div class="col-md-2">
+        <button th:value="${isError2}" type="button" id="modalPayOut" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#payOut" >Cash Out</button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="row">
+    <div class="col-md-11" style="margin: 0px 5%;">
+      <div class="card">
+        <div class="card-header window-border" style="background-color: #5e72e4; color: #fff;"> Sales </div>
+        <div class="row justify-content-md-center">
+
+          <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-2 col-md-2 col-lg-2">
+              <button id="all_process" class="btn btn-primary active" role="button" data-bs-toggle="button"
+                      aria-pressed="false">
+                <i class="fas fa-globe"></i>All
+              </button>
+            </div>
+            <div class="col-sm-5">
+              <button id="in_process" class="btn btn-primary" role="button" data-bs-toggle="button" aria-pressed="false">
+                <i class="far fa-arrow-alt-circle-right"></i>Money input
+              </button>
+              <button id="out_process" class="btn btn-primary" role="button" data-bs-toggle="button" aria-pressed="false">
+                Money Out<i class="far fa-arrow-alt-circle-left"></i>
+              </button>
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-3">
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                <input id="pay_search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                       aria-describedby="addon-wrapping">
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+              <div class="alert alert-warning">No Records Found</div>
+            </div>
+            <table id="payment_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+              <thead>
+              <tr>
+                <th scope="col">Customer</th>
+                <th scope="col">Cash Transaction</th>
+                <th scope="col">Payment Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Detail</th>
+                <th scope="col">Delete</th>
+              </tr>
+              </thead>
+              <tbody id="tableRows">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="payIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel4">MONEY ENTRY</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/payment/insertPayIn" method="post" th:object="${payInInterlayer}">
+            <div class="mb-3">
+              <label class="form-label">Choose Customer</label>
+              <select name="cu_id" id="cu_id" class="selectpicker" data-width="100%"
+                      data-live-search="true">
+                <option data-subtext="" value="0">No Debtor Customers</option>
+                <!--
+                 <th:block th:if="${customerList != null}">
+                     <th:block th:if="${customerList.size() > 0}">
+                         <th:block th:each="item : ${customerList}">
+                             <option th:attr="data-subtext=${item.getCu_id()}"
+                                     th:value="${item.getCu_id()}"
+                                     th:text="${item.getCu_name()}"></option>
+                         </th:block>
+                     </th:block>
+                 </th:block>-->
+              </select>
+              <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('cu_id') }"
+                   th:errors="*{cu_id}"></div>
+            </div>
+
+
+            <div class="mb-3">
+              <label for="pin_detail" class="col-form-label">Description</label>
+              <textarea class="form-control" id="pin_detail" name="pin_detail" placeholder="Deposit Description"></textarea>
+              <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pin_detail') }"
+                   th:errors="*{pin_detail}">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Payment method</label>
+              <select id="pin_paymentType" name="pin_paymentType" class="selectpicker" data-width="100%"
+                      data-live-search="true">
+                <option data-subtext="" value="0">Choose Payment Method</option>
+                <option data-subtext="" value="1">Cash</option>
+                <option data-subtext="" value="2">Card</option>
+                <option data-subtext="" value="3">Transfer</option>
+              </select>
+              <div class="invalid-feedback" style="display: block"
+                   th:if="${ #fields.hasErrors('pin_paymentType') }" th:errors="*{pin_paymentType}">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="pin_price" class="col-form-label">Amount</label>
+              <input type="input" class="form-control" id="pin_price"  name="pin_price" placeholder="Payment total">
+              <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pin_price') }"
+                   th:errors="*{pin_price}">
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="payOut" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" >
+          <h5 class="modal-title" id="exampleModalLabel5" >MONEY OUTPUT</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+        </div>
+        <div class="modal-body">
+          <form action="/payment/insertPayOut" method="post" th:object="${paymentOut}">
+            <div class="mb-3">
+              <label for="pout_detail" class="col-form-label">Description</label>
+              <textarea class="form-control" id="pout_detail"  name="pout_detail"  placeholder="Description"></textarea>
+              <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pout_detail') }"
+                   th:errors="*{pout_detail}">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="pout_price" class="col-form-label">Amount</label>
+              <input type="input" class="form-control" id="pout_price"  name="pout_price" placeholder="Amount to Withdraw">
+              <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pout_price') }"
+                   th:errors="*{pout_price}">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Payment method</label>
+              <select id="pout_paymentType" name="pout_paymentType" class="selectpicker" data-width="100%"
+                      data-live-search="true">
+                <option data-subtext="" value="0">Choose Payment Method</option>
+                <option data-subtext="" value="1">Cash</option>
+                <option data-subtext="" value="2">Card</option>
+                <option data-subtext="" value="3">Transfer</option>
+              </select>
+              <div class="invalid-feedback" style="display: block"
+                   th:if="${ #fields.hasErrors('pout_paymentType') }" th:errors="*{pout_paymentType}">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+  <script th:src="@{/js/payment.js}"></script>
+</th:block>
+
+</body>
+
+
+</html>

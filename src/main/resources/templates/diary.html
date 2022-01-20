@@ -1,0 +1,198 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Agenda</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+<th:block layout:fragment="content">
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="col-md-3">
+                <button th:value="${isError}" id="modalButton" type="button" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#modal1">Add Agenda
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="main-card mb-3 card mainCart">
+        <div class="card-header cardHeader">Appointments</div>
+
+        <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                    <input id="search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                           aria-describedby="addon-wrapping">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="col-lg-12">
+                <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                    <div class="alert alert-warning">No sales information stored on your system could be found.</div>
+                </div>
+                <table id="diary_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">DOCTOR NAME</th>
+                        <th scope="col">PATIENT OWNER NAME</th>
+                        <th scope="col">TITLE</th>
+                        <th scope="col">DESCRIPTION</th>
+                        <th scope="col">DATE</th>
+                        <th scope="col">HOUR</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col">DELETE</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableDiary">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">AGENDA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/diary/insert" method="post" th:object="${diaryInterlayer}">
+
+
+                        <div class="mb-3">
+                            <label for="diary_title" class="col-form-label">Title</label>
+                            <input required type="text" class="form-control" id="diary_title" name="diary_title"
+                                   placeholder="Title"/>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('diary_title') }" th:errors="*{diary_title}"></div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="diary_description" class="col-form-label">Description</label>
+                            <input type="text" class="form-control" id="diary_description" name="diary_description"
+                                   placeholder="Description"/>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('diary_description') }"
+                                 th:errors="*{diary_description}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="diary_date" class="col-form-label">Date</label>
+                            <input type="date" class="form-control" id="diary_date" name="diary_date"/>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('diary_date') }"
+                                 th:errors="*{diary_date}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="diary_time" class="col-form-label">Hour</label>
+                            <input type="time" class="form-control" id="diary_time" name="diary_time"/>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('diary_time') }"
+                                 th:errors="*{diary_time}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">In Whose Name?</label>
+                            <select name="us_id" id="us_id" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                                <option th:value="0">Choose Doctor</option>
+                                <th:block th:if="${doctorList != null}">
+                                    <th:block th:if="${doctorList.size() > 0}">
+                                        <th:block th:each="item : ${doctorList}">
+                                            <option th:value="${item.us_id}"
+                                                    th:text="${item.us_name} + ${item.us_surname}"
+                                                    th:alt="${item.email}">
+                                            </option>
+                                        </th:block>
+                                    </th:block>
+                                </th:block>
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('us_id') }"
+                                 th:errors="*{us_id}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">For Whom</label>
+                            <select name="cu_id" id="cu_id" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                                <option th:value="0">Choose Patient Owner</option>
+                                <th:block th:if="${customerList != null}">
+                                    <th:block th:if="${customerList.size() > 0}">
+                                        <th:block th:each="item : ${customerList}">
+                                            <option th:value="${item.cu_id}"
+                                                    th:text="${item.cu_name} + ${item.cu_surname}"
+                                                    th:alt="${item.cu_mail}">
+                                            </option>
+                                        </th:block>
+                                    </th:block>
+                                </th:block>
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('cu_id') }"
+                                 th:errors="*{cu_id}"></div>
+                        </div>
+
+                        <div class="col mb-3">
+                            <div>
+                                <label class="form-label">Active</label></div>
+                            <div class="form-check">
+                                <input class="form-check-input" th:type="checkbox" checked th:name="diary_statu">
+                            </div>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('diary_statu') }"
+                                 th:errors="*{diary_statu}"></div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <div class="mb-4"></div>
+                            <div class="mb-4">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            <div class="mb-4">
+                                <button type="submit" class="btn btn-success">Complete
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/diary.js}"></script>
+</th:block>
+</body>
+
+</html>

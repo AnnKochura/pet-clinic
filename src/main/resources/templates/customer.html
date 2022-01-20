@@ -1,0 +1,166 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+<th:block layout:fragment="customCss">
+    <script th:src="@{/css/customer.css}"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div class="main-card mb-3 card mainCart">
+        <div class="card-header cardHeader">Customer information</div>
+        <form class="row p-3" id="customerForm" th:object="${customer.customerObj}">
+            <div class="col-md-3 mb-3">
+                <label for="cu_name" class="form-label">Patient Owner Name</label>
+                <input type="text" minlength="2" maxlength="50" name="cu_name" id="cu_name"
+                       class="form-control"
+                       placeholder="Patient Owner"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_surname" class="form-label">Patient Owner Surname</label>
+                <input type="text" minlength="2" maxlength="50" name="cu_surname" id="cu_surname" class="form-control"
+                       placeholder="Patient Owner Surname"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_tel1" class="form-label">Phone Number</label>
+                <input type="text" name="cu_tel1" id="cu_tel1" class="form-control" placeholder="Phone Number"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_tel2" class="form-label">Work phone number</label>
+                <input type="text" name="cu_tel2" id="cu_tel2" class="form-control" placeholder="Work phone number"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_mail" class="form-label">E-Mail</label>
+                <input type="email" name="cu_mail" id="cu_mail" class="form-control" placeholder="E-Mail address"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_tcnumber" class="form-label">Identity number</label>
+                <input type="number" name="cu_tcnumber" id="cu_tcnumber" class="form-control"
+                       placeholder="Identity number"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_taxname" class="form-label">Tax Administration</label>
+                <input type="text" name="cu_taxname" id="cu_taxname" class="form-control"
+                       placeholder="Tax office Name"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="cu_note" class="form-label">Notes</label>
+                <input type="text" name="cu_note" id="cu_note" class="form-control" placeholder="Notes"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div>
+                    <label for="cu_cities" class="form-label">Provinces</label>
+                </div>
+                <select style="width: 100%" class="selectpicker" name="cu_cities" id="cu_cities"
+                        data-width="100%"
+                        data-show-subtext="true"
+                        data-live-search="true">
+                    <option data-subtext="">Make Your Choice</option>
+                    <th:block th:if="${cities.size()>0}">
+                        <th:block th:each="item : ${cities}">
+                            <option th:attr="data-subtext=${item.getCid()}"
+                                    th:value="${item.getCid()}"
+                                    th:text="${item.getCname()}"></option>
+                        </th:block>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div>
+                    <label for="cu_districts" class="form-label">Districts</label>
+                </div>
+                <select class="selectpicker" name="cu_districts" id="cu_districts"
+                        data-width="100%"
+                        data-show-subtext="true"
+                        data-live-search="true">
+                </select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div>
+                    <label for="cu_group" class="form-label">Customer group</label></div>
+                <select class="selectpicker" name="cu_group" id="cu_group"
+                        data-width="100%"
+                        data-show-subtext="true"
+                        data-live-search="true">
+                    <option data-subtext="">Make Your Choice</option>
+                    <th:block th:if="${cuGroups != null}">
+                        <th:block th:if="${cuGroups.size()>0}">
+                            <th:block th:each="item : ${cuGroups}">
+                                <option th:attr="data-subtext=${item.getCu_gr_id()}" th:value="${item.getCu_gr_id()}"
+                                        th:text="${item.getCu_gr_name()}"></option>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div>
+                    <label for="cu_address" class="form-label">Address</label></div>
+                <input type="text" name="cu_address" id="cu_address" class="form-control" placeholder="Address"/>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="input-group ">
+                    <label class="form-control">Customer Discount Rate</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fa fa-percent"></i></span>
+                        <input min="0" max="99" maxlength="2" name="cu_rateOfDiscount" id="cu_rateOfDiscount"
+                               type="number" class="form-control" placeholder="% Oranı" aria-label="Username"
+                               aria-describedby="addon-wrapping">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="cu_smsNotice" name="cu_smsNotice" checked>
+                <label class="form-check-label" for="cu_smsNotice">SMS Notification</label>
+            </div>
+
+            <div class="col-md-3 mb-3 form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="cu_mailNotice" name="cu_mailNotice" checked>
+                <label class="form-check-label" for="cu_mailNotice">Mail Notification</label>
+            </div>
+
+            <div class="card-header cardHeader">Patient Information</div>
+            <div class="row">
+                <div class=" col-md-9">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <button type="button" id="btnAdd" class="btn btn-primary">Add</button>
+
+    <div id="addForms"></div>
+
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="container position-relative bottom-3 btn-group col-md-3 align-content-lg-end" role="group">
+            <button type="button" class="btn btn-success" id="btnSubmitSend" style="width:100px;height:50px">Send
+            </button>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/customer.js}"></script>
+</th:block>
+
+</body>
+</html>

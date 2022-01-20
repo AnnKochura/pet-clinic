@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Register</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-sm-6" style="border-right: 3px solid turquoise;">
+
+            <form th:action="@{'/register/add'}" th:object="${registerInterlayer}" method="post"
+                  enctype="multipart/form-data">
+                <h4>
+                    Defining New User
+                </h4>
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('user_name') }"
+                     th:errors="*{user_name}"></div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="user_name" placeholder="Name"/>
+                </div>
+
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('user_surname') }"
+                     th:errors="*{user_surname}"></div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="user_surname" placeholder="Surname"/>
+                </div>
+
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('user_email') }"
+                     th:errors="*{user_email}"></div>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="user_email" placeholder="E-Mail"/>
+                </div>
+
+                <div class="invalid-feedback" style="display: block"
+                     th:if="${ #fields.hasErrors('user_password') }"
+                     th:errors="*{user_password}"></div>
+                <div class="mb-3">
+                    <input class="form-control" type="password" name="user_password" placeholder="Password"/>
+                </div>
+
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('user_tel') }"
+                     th:errors="*{user_tel}"></div>
+                <div class="mb-3">
+                    <input class="form-control" type="tel" name="user_tel" placeholder="Phone"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="user_file" class="form-label">Choose File</label>
+                    <input class="form-control" type="file" id="user_file" name="user_file" accept="image/*"
+                           multiple="multiple">
+                </div>
+
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('user_roles') }"
+                     th:errors="*{user_roles}"></div>
+                <select class="selectpicker" name="user_roles[]" multiple data-actions-box="true">
+                    <option data-icon="far fa-user" th:value="1" th:text="ADMIN"></option>
+                    <option data-icon="far fa-hospital" th:value="2" th:text="DOCTOR"></option>
+                    <option data-icon="fas fa-user-nurse" th:value="3" th:text="SECRETARY"></option>
+                    <option data-icon="fas fa-walking" th:value="4" th:text="BEGINNER"></option>
+                </select>
+
+                <button type="submit" id="submitButton" class="btn btn-success">Save</button>
+            </form>
+        </div>
+
+        <div class="col-sm-6">
+
+            <form th:action="@{'/register/change'}" th:object="${registerChangeInterlayer}" method="post">
+                <h4>
+                    Change of Power
+                </h4>
+                <div><label for="change_user_name" class="form-label">User Selection</label></div>
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('change_user_name') }"
+                     th:errors="*{change_user_name}"></div>
+
+                <select id="change_user_name" class="selectpicker" name="change_user_name" data-width="100%"
+                        data-live-search="true">
+                    <option th:value="${null}">Select User</option>
+                    <th:block th:if="${userList!=null}">
+                        <th:block th:if="${userList.size()>0}">
+                            <th:block th:each="item : ${userList}">
+                                <option th:value="${item.us_id}" th:text="${item.email}"></option>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                </select>
+                <div><label for="change_user_roles[]" class="form-label">Role(s) Selection</label></div>
+                <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('change_user_roles') }"
+                     th:errors="*{change_user_roles}"></div>
+
+                <select class="selectpicker" name="change_user_roles[]" id="change_user_roles[]" multiple
+                        data-actions-box="true">
+                    <option data-icon="far fa-user" th:value="1" th:text="ADMIN"></option>
+                    <option data-icon="far fa-hospital" th:value="2" th:text="DOCTOR"></option>
+                    <option data-icon="fas fa-user-nurse" th:value="3" th:text="SECRETARY"></option>
+                    <option data-icon="fas fa-walking" th:value="4" th:text="BEGINNER"></option>
+                </select>
+
+                <div>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/register.js}"></script>
+</th:block>
+</body>
+
+</html>

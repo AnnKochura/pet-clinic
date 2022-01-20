@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<th:block th:fragment="header">
+
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Pet Clinic</h3>
+            <strong>VC</strong>
+        </div>
+
+        <ul id="sidebar_items" class="list-unstyled components">
+            <li>
+                <a th:href="@{/dashboard}">
+                    <i class="fas fa-home"></i>
+                    HOME PAGE
+                </a>
+            </li>
+            <li class="active">
+                <a class="anchor_items dropdown-toggle" href="#homeSubmenu" data-bs-toggle="collapse"
+                   aria-controls="homeSubmenu" aria-expanded="false">
+                        <span>
+                            <i style="margin-right: 3px; margin-top: 5px" class="fas fa-users"></i>
+                            Customer
+                        </span>
+                </a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a th:href="@{/customer}">Add Customer</a>
+                    </li>
+                    <li>
+                        <a th:href="@{customerlist}">Customer Search</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a th:href="@{/sale}">
+                    <i class="fas fa-balance-scale-left"></i>
+                    Sales
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/purchase}">
+                    <i class="fas fa-balance-scale-right"></i>
+                    Buying
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/payment}">
+                    <i class="fas fa-coins"></i>
+                    Cashbox
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/lab}">
+                    <i class="fas fa-vials"></i>
+                    Lab
+                </a>
+            </li>
+
+            <li>
+                <a th:href="@{/diary}">
+                    <i class="far fa-calendar-plus"></i>
+                    Agenda
+                </a>
+            </li>
+
+            <li>
+                <a th:href="@{/calender}">
+                    <i class="far fa-calendar-alt"></i>
+                    Appointment
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/statistic}">
+                    <i class="fas fa-chart-pie"></i>
+                    Statistics
+                </a>
+            </li>
+
+            <li class="active">
+                <a class="anchor_items dropdown-toggle" href="#definition" data-bs-toggle="collapse"
+                   aria-controls="definition" aria-expanded="false">
+                        <span>
+                            <i style="margin-right: 3px; margin-top: 5px" class="far fa-plus-square"></i>
+                            Definition
+                        </span>
+                </a>
+                <ul class="collapse list-unstyled" id="definition">
+                    <li>
+                        <a th:href="@{/product}">Product</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/supplier}">Supplier</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/customergroup}">Customer Group</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/category}">Category</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a th:href="@{/register}">
+                    <i class="fas fa-user-plus"></i>
+                    Add User
+                </a>
+            </li>
+
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li>
+                <a style="text-align:center;" th:href="@{'/logout'}" class="article">Logout</a>
+            </li>
+        </ul>
+    </nav>
+
+</th:block>
+
+</body>
+</html>

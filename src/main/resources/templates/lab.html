@@ -1,0 +1,150 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Laboratory</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="col-md-3">
+                <button th:value="${isError}" type="button" id="modalButton" class="btn btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#labModal">ADD LABORATORY
+                </button>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="main-card mb-3 card mainCart">
+        <div class="card-header cardHeader">Customers</div>
+
+        <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                    <input id="search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                           aria-describedby="addon-wrapping">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="col-lg-12">
+                <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                    <div class="alert alert-warning">The laboratory information registered to your system could not be found.</div>
+                </div>
+                <table id="lab_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Customer Name and Surname</th>
+                        <th scope="col">Doctor Name and Surname</th>
+                        <th scope="col">Laboratory Type</th>
+                        <th scope="col">Detail</th>
+                        <th scope="col">View</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableLab">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="labModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">ADD LABORATORY</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/lab/insertLab" method="post" th:object="${labInterlayer}"
+                          enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="us_id" class="form-label">Search for a Doctor</label>
+                            <select name="us_id" id="us_id" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                                <option th:value="0">Choose Doctor</option>
+                                <th:block th:if="${doctorList != null}">
+                                    <th:block th:if="${doctorList.size() > 0}">
+                                        <th:block th:each="item : ${doctorList}">
+                                            <option th:value="${item.us_id}"
+                                                    th:text="${item.us_name}+' '+${item.us_surname}"
+                                                    th:alt="${item.email}">
+                                            </option>
+                                        </th:block>
+                                    </th:block>
+                                </th:block>
+                            </select>
+                            <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('us_id') }"
+                                 th:errors="*{us_id}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cu_id" class="form-label">Patient Owner</label>
+                            <select class="selectpicker" name="cu_id" id="cu_id" data-width="100%"
+                                    data-live-search="true">
+                                <option th:value="0">Choose Patient Owner</option>
+                                <th:block th:if="${customerList != null}">
+                                    <th:block th:if="${customerList.size() > 0}">
+                                        <th:block th:each="item : ${customerList}">
+                                            <option th:value="${item.cu_id}"
+                                                    th:text="${item.cu_name} + ' ' + ${item.cu_surname} + ' - ' + ${item.cu_note}">
+                                            </option>
+                                        </th:block>
+                                    </th:block>
+                                </th:block>
+                            </select>
+                            <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('cu_id') }"
+                                 th:errors="*{cu_id}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lab_type" class="form-label">Laboratory Type</label>
+                            <select id="lab_type" name="lab_type" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                                <option data-subtext="" value="0">Select Laboratory Type</option>
+                                <option data-subtext="" value="1">Hemogram</option>
+                                <option data-subtext="" value="2">X-Ray</option>
+                                <option data-subtext="" value="3">Biochemistry</option>
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('lab_type') }" th:errors="*{lab_type}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lab_file" class="form-label">Choose File</label>
+                            <input class="form-control" type="file" id="lab_file" name="lab_file" accept="image/*"
+                                   multiple="multiple">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lab_detail" class="form-label">Detail</label>
+                            <input class="form-control" type="text" id="lab_detail" name="lab_detail">
+                        </div>
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('lab_detail') }" th:errors="*{lab_detail}"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button id="submitButton" type="submit" class="btn btn-danger">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/lab.js}"></script>
+</th:block>
+</body>
+</html>

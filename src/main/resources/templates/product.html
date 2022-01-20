@@ -1,0 +1,210 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Adding a Product</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content">
+    <div class="breadcrumb" style="background-color: #e9ecef; padding: .75rem 1rem;">
+        <button th:value="${isError}" type="button" id="modalButton" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#modal1">
+            <i class="fa fa-save"></i> + ADD NEW PRODUCT
+        </button>
+        <button style="display: none;" th:value="${isError}" type="button" id="product_updateBtn"
+                class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal1">
+            <i class="fa fa-save"></i>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-11" style="margin: 0px 5%;">
+            <div class="card">
+                <div class="card-header window-border" style="background-color: #5e72e4; color: #fff;"> Product Table
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                                <input id="searchProduct" type="text" class="form-control" placeholder="search..."
+                                       aria-label="Username"
+                                       aria-describedby="addon-wrapping">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                            <div class="alert alert-warning">No registered product found in the system.</div>
+                        </div>
+                        <table id="product_control"
+                               class="align-middle mb-0 table table-borderless table-striped table-hover ">
+                            <thead>
+                            <th scope="col">ID</th>
+                            <th scope="col">NAME OF THE PRODUCT</th>
+                            <th scope="col">UNIT</th>
+                            <th scope="col">PRODUCT TYPE</th>
+                            <th scope="col">VAT</th>
+                            <th scope="col">PURCHASE PRICE</th>
+                            <th scope="col">SALE PRICE</th>
+                            <th scope="col">THE AMOUNT OF STOCK</th>
+                            <th scope="col">PROCESS</th>
+                            </thead>
+                            <tbody id="tableRows">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">ADD PRODUCT</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form class="row p-2" action="/product/insert" th:method="Post" th:object="${productInterlayer}">
+                    <div class="col-md-12 mb-12">
+                        <label for="product_name" class="form-label">Name of the product</label>
+                        <input type="text" name="product_name" id="product_name" class="form-control">
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('product_name') }"
+                             th:errors="*{product_name}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-6">
+                        <div>
+                            <label for="product_unit" class="form-label">Unit</label></div>
+                        <select class="selectpicker" name="product_unit" id="product_unit"
+                                data-width="100%"
+                                data-show-subtext="true"
+                                data-live-search="true">
+                            <option data-subtext="" value="0">Select Unit</option>
+                            <option value="1">Number</option>
+                            <option value="2">KG</option>
+                            <option value="3">Meters</option>
+                            <option value="4">Liters</option>
+                        </select>
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('product_unit') }"
+                             th:errors="*{product_unit}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-6">
+                        <div>
+                            <label for="category" class="form-label">Product Type</label></div>
+                        <select class="selectpicker" name="category" id="category"
+                                data-width="100%"
+                                data-show-subtext="true"
+                                data-live-search="true">
+                            <option data-subtext="" value="0">Select Product Type</option>
+                            <th:block th:if="${categoryList != null}">
+                                <th:block th:if="${categoryList.size()>0}">
+                                    <th:block th:each="item:${categoryList}">
+                                        <option th:value="${item.category_id}"
+                                                th:text="${item.category_title}"></option>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                        </select>
+                        <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('category') }"
+                             th:errors="*{category}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 mb-6">
+                        <div>
+                            <label for="product_kdv" class="form-label">VAT</label></div>
+                        <select class="selectpicker" name="product_kdv" id="product_kdv"
+                                data-width="100%"
+                                data-show-subtext="true"
+                                data-live-search="true">
+                            <option data-subtext="" value="0">%VAT</option>
+                            <option value="1">%1</option>
+                            <option value="2">%8</option>
+                            <option value="3">%18</option>
+
+                        </select>
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('product_kdv') }"
+                             th:errors="*{product_kdv}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-6">
+                        <label for="product_alis" class="form-label">Purchase price</label>
+                        <input type="text" name="product_alis" id="product_alis" class="form-control"
+                               placeholder="Purchase price">
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('product_alis') }"
+                             th:errors="*{product_alis}">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-6">
+                        <label for="product_satis" class="form-label">Sale price</label>
+                        <input type="text" name="product_satis" id="product_satis" class="form-control"
+                               placeholder="Sale price">
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('product_satis') }"
+                             th:errors="*{product_satis}">
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-6">
+                        <label for="product_stokMiktari" class="form-label">The amount of stock</label>
+                        <input type="text" name="product_stokMiktari" id="product_stokMiktari" class="form-control">
+                        <div class="invalid-feedback" style="display: block"
+                             th:if="${ #fields.hasErrors('product_stokMiktari') }"
+                             th:errors="*{product_stokMiktari}">
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <div class="mb-4"></div>
+                        <div class="mb-4">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-success">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/product.js}"></script>
+</th:block>
+</body>
+
+</html>

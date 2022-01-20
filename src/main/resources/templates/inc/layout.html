@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/boxicons/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/fontawesome-free-5.15.4-web/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap-select.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    -->
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/fontawesome-free-5.15.4-web/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap-select.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <th:block layout:fragment="customCss"></th:block>
+
+</head>
+<body>
+<div class="wrapper">
+    <th:block th:replace="inc/sidebar :: header"></th:block>
+    <div id="content">
+        <th:block th:replace="inc/header :: sidebar"></th:block>
+        <th:block layout:fragment="content"></th:block>
+    </div>
+</div>
+<!--
+<script th:src="@{/dist/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/dist/js/bootstrap-select.js}"></script>
+<script th:src="@{/css/fontawesome-free-5.15.4-web/js/all.min.js}"></script>
+<script th:src="@{/js/sidebar.js}"></script>
+<th:block layout:fragment="customJs"></th:block>
+-->
+<script th:src="@{/dist/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/dist/js/bootstrap-select.js}"></script>
+<script th:src="@{/css/fontawesome-free-5.15.4-web/js/all.min.js}"></script>
+<script th:src="@{/js/sidebar.js}"></script>
+<script th:src="@{/js/header.js}"></script>
+<th:block layout:fragment="customJs"></th:block>
+</body>
+</html>

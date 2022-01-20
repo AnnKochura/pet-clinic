@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="inc/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>dashboard</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body" style="padding: 0.7rem 1rem;">Daily Expected Appointment</br><h3
+                        style="font-size: 2rem;margin-bottom: -10px" th:text="${diaryToday}"></h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span class="small text-white stretched-link"
+                          th:text="${rateDiary}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body" style="padding: 0.7rem 1rem;">Daily New Customer Acquisition</br><h3
+                        style="font-size: 2rem;margin-bottom: -10px" th:text="${customerToday}"></h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span class="small text-white stretched-link"
+                          th:text="${rateCustomer}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body" style="padding: 0.7rem 1rem;">Daily Turnover</br>
+                    <h3 style="font-size: 2rem;margin-bottom: -10px" th:text="'₺'+${todayCiro}"></h3>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <span class="small text-white stretched-link" th:text="${rateCiro}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body" style="padding: 0.7rem 1rem;height: 112.6px;">Total Stock Value</br>
+                    <h3 style="font-size: 2rem;margin-bottom: -10px;" th:text="'₺'+${stockValue}"></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-md-6">
+            <div class="card" style="min-height: 141px;">
+                <div class="card-header window-border" style="background-color: #6495ED; color: #fff;">
+                    <i class="fas fa-reply"></i><span style="margin-left: 6px;">Past Appointments Today</span></div>
+                <div class="row justify-content-md-center">
+                    <div style="max-height: 150px; overflow: auto; display:inline-block;" class="table-responsive">
+                        <th:block th:if="${dashExpiredDiaryList.size() == 0}">
+                            <div id="expiredError_message" class="col-lg-12;" style="text-align: center;"><br>
+                                <div class="alert alert-warning">No Records Found</div>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${dashExpiredDiaryList.size() > 0}">
+                            <table id="expiredDiary_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Surname</th>
+                                    <th scope="col">Appointment date</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableRows1">
+                                <th:block th:each="item:${dashExpiredDiaryList}">
+                                    <tr style="background-color: #F58F8F;">
+                                        <td th:text="${item.cuName}"></td>
+                                        <td th:text="${item.cuSurname}"></td>
+                                        <td th:text="${item.diaryDate}"></td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </th:block>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-md-6">
+            <div class="card" style="min-height: 141px;">
+                <div class="card-header window-border" style="background-color: #6495ED; color: #fff;">
+                    <i class="fas fa-share"></i><span style="margin-left: 6px;">Upcoming Appointments Today</span></div>
+                <div class="row justify-content-md-center">
+
+                    <!--Zamanı geçmiş randevu yoksa-->
+                    <div class="table-responsive" style="max-height: 150px; overflow: auto; display:inline-block;">
+                        <th:block th:if="${dashUpcomingDiaryList.size() == 0}">
+                            <div id="upcomingError_message" class="col-lg-12;" style="text-align: center;"><br>
+                                <div class="alert alert-warning">No records found</div>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${dashUpcomingDiaryList.size() > 0}">
+                            <table id="upcomingDiary_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Surname</th>
+                                    <th scope="col">Appointment date</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableRows2">
+                                <th:block th:each="item:${dashUpcomingDiaryList}">
+                                    <tr>
+                                        <td th:text="${item.cuName}"></td>
+                                        <td th:text="${item.cuSurname}"></td>
+                                        <td th:text="${item.diaryDate}"></td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px"></div>
+        <div class="col-12 col-md-7">
+            <div class="card flex-fill w-100">
+                <div class="card-header" style="background-color: cornflowerblue; color: white;">
+                    <i class="fas fa-chart-line"></i>
+                    Number of Customers per Day
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas style="display: block; height: 300px;" id="chartjs-line"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5">
+            <div class="card">
+                <div class="card-header" style="background-color: cornflowerblue; color: white;">
+                    <i class="fas fa-chart-bar"></i>
+                    Total Number of Patients ( % )
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas style="display: block; height: 300px;" id="chartjs-polar-area"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</th:block>
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/chart/app.js}"></script>
+    <script th:src="@{/js/chart/chart.js}"></script>
+</th:block>
+
+</body>
+</html>

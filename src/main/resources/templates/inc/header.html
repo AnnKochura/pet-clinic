@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<th:block th:fragment="sidebar">
+    <div style="display:flex; justify-content: space-between" class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-align-left"></i>
+        </button>
+
+        <div id="profile" class="header_img header_dropdown" style="position: relative; z-index: 1">
+            <img id="profileImage" style="width:35px;" >
+            <div id="pro_setting" style="width: 200px; height: 40px; margin-top: 3px">
+
+                <a th:href="@{'/changepassword'}">
+                    <button class="btn btn-outline-info">Change password</button>
+                </a>
+                <a th:href="@{'/logout'}">
+                    <button class="btn btn-outline-dark">Exit</button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <hr>
+
+</th:block>
+</body>
+</html>
+
+
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" th:href="@{/images/login/icons/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/css/login/vendor/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login/vendor/animate/animate.css}">
+    <link rel="stylesheet" th:href="@{/css/login/vendor/css-hamburgers/hamburgers.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login/vendor/animsition/css/animsition.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login/vendor/select2/select2.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login/vendor/daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" th:href="@{/css/login/util.css}">
+    <link rel="stylesheet" th:href="@{/css/login/main.css}">
+
+
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-login100"
+         th:style="'background-image:url(' + @{/images/login/login.png} + '); background-repeat: no-repeat, repeat; background-size: contain; z-index: auto'">
+        <div class="wrap-login100 p-t-30 p-b-50">
+				<span class="login100-form-title p-b-41">
+					ACCOUNT LOGIN
+				</span>
+
+            <div th:if="${param.error}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> Username or password is incorrect
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form style="background-color: #11111191;"
+                  th:action="@{/login}" method="post"
+                  class="login100-form validate-form p-b-33 p-t-5">
+
+                <div class="wrap-input100 validate-input" data-validate="Enter username">
+                    <input style="color: navajowhite" class="input100" type="text" name="username"
+                           placeholder="Username">
+                    <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <input style="color: navajowhite" class="input100" type="password" name="password"
+                           placeholder="Password">
+                    <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                </div>
+
+                <div class="container-login100-form-btn m-t-32">
+                    <button class="login100-form-btn" type="submit">
+                        LOGIN
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="dropDownSelect1"></div>
+
+<script th:src="@{/css/login/vendor/jquery/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/css/login/vendor/animsition/js/animsition.min.js}"></script>
+<script th:src="@{/css/login/vendor/bootstrap/js/popper.min.js}"></script>
+<script th:src="@{/css/login/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/css/login/vendor/select2/select2.min.js}"></script>
+<script th:src="@{/css/login/vendor/daterangepicker/moment.min.js}"></script>
+<script th:src="@{/css/login/vendor/daterangepicker/daterangepicker.js}"></script>
+<script th:src="@{/css/login/vendor/countdowntime/countdowntime.js}"></script>
+
+<script th:src="@{/js/login.js}"></script>
+
+</body>
+</html>

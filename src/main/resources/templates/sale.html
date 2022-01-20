@@ -1,0 +1,150 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+
+<head>
+    <title>Sales</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+
+<th:block layout:fragment="content">
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid ">
+            <div class="col-md-3">
+                <button th:value="${isError}" type="button" id="modalButton" class="btn btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#saleModal">SALES TO REGISTERED CUSTOMER
+                </button>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="main-card mb-3 card mainCart">
+        <div class="card-header cardHeader">Sales</div>
+
+        <div class="row mt-3" style="padding-right: 15px; padding-left: 15px;">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-search"></i></span>
+                    <input id="search" type="text" class="form-control" placeholder="search..." aria-label="Username"
+                           aria-describedby="addon-wrapping">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="col-lg-12">
+                <div id="error_message" class="col-lg-12;" style="text-align: center;"><br>
+                    <div class="alert alert-warning">No sales information stored on your system could be found.</div>
+                </div>
+                <table id="sale_control" class="align-middle mb-0 table table-borderless table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">DATE</th>
+                        <th scope="col">BILL NUMBER</th>
+                        <th scope="col">CUSTOMER INFORMATION</th>
+                        <th scope="col">PRODUCT INFORMATION</th>
+                        <th scope="col">NUMBER OF PRODUCTS</th>
+                        <th scope="col">PAYMENT METHOD</th>
+                        <th scope="col">AMOUNT</th>
+                        <th scope="col">DETAIL</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableSale">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="saleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">SALES TO REGISTERED CUSTOMER</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/sale/insertSale" method="post" th:object="${saleInterlayer}">
+
+                        <div class="mb-3">
+                            <label class="form-label">Patient Owner</label>
+                            <select name="cid" id="cName" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                            </select>
+                            <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('cid') }"
+                                 th:errors="*{cid}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Product Search</label>
+                            <select class="selectpicker" name="pid" id="pName" data-width="100%"
+                                    data-live-search="true">
+                            </select>
+                            <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pid') }"
+                                 th:errors="*{pid}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pAmount" class="col-form-label">Product Quantity</label>
+                            <input type="input" class="form-control" id="pAmount" name="pAmount"
+                                   placeholder="Product Quantity"
+                                   value="0" size="5" maxlength="5" min="0"
+                            />
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('pAmount') }" th:errors="*{pAmount}"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Payment method</label>
+                            <select id="pPaymentType" name="pPaymentType" class="selectpicker" data-width="100%"
+                                    data-live-search="true">
+                                <option data-subtext="" value="0">Choose Payment Method</option>
+                                <option data-subtext="" value="1">Cash</option>
+                                <option data-subtext="" value="2">Card</option>
+                                <option data-subtext="" value="3">Transfer</option>
+                            </select>
+                            <div class="invalid-feedback" style="display: block"
+                                 th:if="${ #fields.hasErrors('pPaymentType') }" th:errors="*{pPaymentType}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pNote" class="col-form-label">Sales Note</label>
+                            <textarea class="form-control" id="pNote" name="pNote"
+                                      placeholder="Enter Your Sales Note"></textarea>
+                            <div class="invalid-feedback" style="display: block" th:if="${ #fields.hasErrors('pNote') }"
+                                 th:errors="*{pNote}"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+
+</th:block>
+
+
+<th:block layout:fragment="customJs">
+    <script th:src="@{/js/sale.js}"></script>
+</th:block>
+
+</body>
+
+
+</html>

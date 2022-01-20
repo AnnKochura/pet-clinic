@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="inc/layout">
+<head>
+    <title>403</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="row mt-3" style="text-align: center">
+
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-6">
+            <img th:src="@{/images/403/403.webp}">
+        </div>
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6 mt-3">
+            <div class="card" style="background-color: orange">
+                <div class="card-body" style="color: turquoise">
+                    <h5 class="card-title" style="color:black;">Warning</h5>
+                    <p class="card-text" style="color:antiquewhite;">You cannot access the page you are not authorized. I can point you to the
+                        entrance.</p>
+                    <a th:href="@{/dashboard}" class="btn btn-warning">GO</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+
+    </div>
+</th:block>
+</body>
+</html>
