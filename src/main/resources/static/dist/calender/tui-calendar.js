@@ -23245,37 +23245,37 @@
                     },
 
                     'popupIsAllDay-tmpl': function() {
-                        return 'Tüm Gün';
+                        return 'All day';
                     },
 
                     'popupStateFree-tmpl': function() {
-                        return 'Açık';
+                        return 'Open';
                     },
 
                     'popupStateBusy-tmpl': function() {
-                        return 'Meşgul';
+                        return 'Busy';
                     },
 
                     'titlePlaceholder-tmpl': function() {
-                        return 'Konu';
+                        return 'Subject';
                     },
 
                     'locationPlaceholder-tmpl': function() {
-                        return 'Lokasyon';
+                        return 'Location';
                     },
 
                     'startDatePlaceholder-tmpl': function() {
-                        return 'Başlama Tarihi';
+                        return 'Stat date';
                     },
 
                     'endDatePlaceholder-tmpl': function() {
-                        return 'Bitiş Tarihi';
+                        return 'End date';
                     },
                     'popupSave-tmpl': function() {
-                        return 'Kayıt';
+                        return 'Record';
                     },
                     'popupUpdate-tmpl': function() {
-                        return 'Güncelle';
+                        return 'Update';
                     },
                     'popupDetailDate-tmpl': function(isAllDay, start, end) {
                         var isSameDate = datetime.isSameDate(start, end);
@@ -23294,7 +23294,7 @@
                         return (schedule.attendees || []).join(', ');
                     },
                     'popupDetailState-tmpl': function(schedule) {
-                        return schedule.state || 'Meşgul';
+                        return schedule.state || 'Busy';
                     },
                     'popupDetailRepeat-tmpl': function(schedule) {
                         return schedule.recurrenceRule;
@@ -23303,10 +23303,10 @@
                         return schedule.body;
                     },
                     'popupEdit-tmpl': function() {
-                        return 'Düzenle';
+                        return 'Edit';
                     },
                     'popupDelete-tmpl': function() {
-                        return 'Sil';
+                        return 'Delete';
                     }
                 };
 
